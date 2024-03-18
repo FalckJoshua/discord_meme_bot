@@ -1,7 +1,11 @@
-import xijingping
+import asciiArt
 from discord.ext import commands
 import asyncio
 import discord
+import sys
+sys.path.append('./sounds')
+import sounds
+
 
 async def play(ctx):
     # Ensure the bot is in a voice channel
@@ -17,7 +21,7 @@ async def play(ctx):
         await ctx.voice_client.move_to(voice_channel)
 
     # Play the audio file
-    audio_source = discord.FFmpegPCMAudio(executable="ffmpeg", source="C:\\Users\\falck\\Downloads\\monkey.mp3")
+    audio_source = sounds.discordPlayMp3(sounds.removeSound)
     if not ctx.voice_client.is_playing():
         ctx.voice_client.play(audio_source, after=lambda e: print('done', e))
 
@@ -32,4 +36,4 @@ async def get_response(ctx, user_input: str) -> str:
 
     if lowered_input == "king":
         await play(ctx)
-        return xijingping.xiJingPingArt
+        return asciiArt.xiJingPingArt

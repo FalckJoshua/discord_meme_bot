@@ -4,7 +4,6 @@ import os
 from dotenv import load_dotenv
 from responses import get_response, play
 from discord.ext import commands
-import discord
 
 
 load_dotenv()
