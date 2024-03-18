@@ -5,6 +5,7 @@ import discord
 import sys
 sys.path.append('./sounds')
 import sounds
+import functions
 
 
 async def play(ctx):
@@ -33,7 +34,15 @@ async def play(ctx):
 
 async def get_response(ctx, user_input: str) -> str:
     lowered_input = user_input.lower()
+    words = lowered_input.split()
 
-    if lowered_input == "king":
+    if words[0] == "king":
         await play(ctx)
         return asciiArt.xiJingPingArt
+    
+    if words[0] == "roll":
+        return f"{ctx.author.mention} Has rolled a sexy {functions.get_random_number()}"
+    
+    if words[0] == "bakugan":
+        return functions.battleBattleRoll(words, ctx)
+        
