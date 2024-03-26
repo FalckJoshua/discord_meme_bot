@@ -1,12 +1,8 @@
 import asciiArt
 from discord.ext import commands
 import asyncio
-import discord
-import sys
-sys.path.append('./sounds')
-import sounds
 import functions
-
+from sounds import sounds
 
 async def play(ctx):
     # Ensure the bot is in a voice channel
