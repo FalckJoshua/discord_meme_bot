@@ -3,6 +3,7 @@ from discord.ext import commands
 import asyncio
 import functions
 from sounds import sounds
+from hangman import hangman
 
 async def play(ctx):
     # Ensure the bot is in a voice channel
@@ -41,4 +42,7 @@ async def get_response(ctx, user_input: str) -> str:
     
     if words[0] == "bakugan":
         return functions.battleBattleRoll(words, ctx)
+    
+    if words[0] == "hangman":
+        return await hangman.hangman(ctx)
         
