@@ -23,7 +23,7 @@ async def hangman(ctx):
         def check(m):
             return m.author == ctx.author and m.channel == ctx.channel and m.content.startswith('%g')
         message = await ctx.bot.wait_for('message', check=check)
-        guess = message.content.lower().strip('%g')
+        guess = message.content.lower().split('%g')[1].strip()
         correct = False
         for position in range(len(choosen_word)):    
             letter = choosen_word[position]
