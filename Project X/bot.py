@@ -18,8 +18,14 @@ async def send_message(message: Message, user_message: str) -> None:
     if not user_message:
         print("Message is empty")
         return
-    if is_private := user_message[0] == '$':
+    is_private = False
+    if user_message[0] == '$':
+        is_private = True
         user_message = user_message[1:]
+    elif user_message[0] == '%':
+        user_message = user_message[1:]
+    else:
+        return
     try:
         ctx = await bot.get_context(message)
         response: str = await get_response(ctx, user_message)
