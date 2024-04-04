@@ -45,4 +45,6 @@ async def get_response(ctx, user_input: str) -> str:
     
     if words[0] == "hangman":
         return await hangman.hangman(ctx)
+    if words[0] == "score":
+        return functions.get_scores(ctx)
         
