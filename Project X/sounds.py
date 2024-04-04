@@ -1,11 +1,12 @@
 import discord
 import random
 import time
+import os
 
-removeSound = "sounds/remove.mp3"
-potatis = "sounds/potatis.mp3"
-redSun = "sounds/redSun.mp3"
-redsun2 = "sounds/redSun2.mp3"
+removeSound = "Project X/sounds/remove.mp3"
+potatis = "Project X/sounds/potatis.mp3"
+redSun = "Project X/sounds/redSun.mp3"
+redsun2 = "Project X/sounds/redSun2.mp3"
 
 
 differentSound = [removeSound, potatis, redSun, redsun2]
@@ -22,6 +23,9 @@ def discordPlayMp3(soundPath):
 
     randomSound = random.choice(available_sounds)
     last_played[randomSound] = current_time
+
+    if not os.path.isfile(randomSound):
+        print(f"File not found: {randomSound}")
+        return None
     
     return discord.FFmpegPCMAudio(executable="ffmpeg", source=randomSound)
-

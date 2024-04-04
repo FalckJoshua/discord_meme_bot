@@ -2,7 +2,7 @@ import asciiArt
 from discord.ext import commands
 import asyncio
 import functions
-from sounds import sounds
+import sounds
 from hangman import hangman
 
 async def play(ctx):
