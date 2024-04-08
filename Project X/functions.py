@@ -40,19 +40,34 @@ def battleBattleRoll(words, ctx):
             return f"{ctx.author.mention} and {opponent} both rolled {authorRoll}. It's a tie!"
 
         # Update scores
-        scores[server_id][winnnerDisplay] = scores[server_id].get(winnnerDisplay, 0) + 1
-        scores[server_id][loserDisplay] = scores[server_id].get(loserDisplay, 0) - 1
+        if winnnerDisplay not in scores[server_id]:
+            scores[server_id][winnnerDisplay] = {"score": 0, "wins": 0, "losses": 0}
+
+        if loserDisplay not in scores[server_id]:
+            scores[server_id][loserDisplay] = {"score": 0, "wins": 0, "losses": 0}
+
+        scores[server_id][winnnerDisplay]["score"] = scores[server_id][winnnerDisplay].get("score", 0) + 1
+        scores[server_id][loserDisplay]["score"] = scores[server_id][loserDisplay].get("score", 0) - 1
+        scores[server_id][winnnerDisplay]["wins"] = scores[server_id][winnnerDisplay].get("wins", 0) + 1
+        scores[server_id][loserDisplay]["losses"] = scores[server_id][loserDisplay].get("losses", 0) + 1
 
         # Save scores to file
         with open('scores.json', 'w') as f:
             json.dump(scores, f)
 
-        return f"{ctx.author.mention} rolled {authorRoll}, {opponent} rolled {opponentRoll}. {winner} wins!"
+        # Get the current scores, wins, and losses of the winner and loser
+        winnerScore = scores[server_id][winnnerDisplay]["score"]
+        loserScore = scores[server_id][loserDisplay]["score"]
+        winnerWins = scores[server_id][winnnerDisplay]["wins"]
+        loserLosses = scores[server_id][loserDisplay]["losses"]
+
+        return f"{ctx.author.mention} rolled {authorRoll}, {opponent} rolled {opponentRoll}. {winner} wins. Score: {winnerScore}  {loser} score: {loserScore}"
     else:
         return "You must mention a user to start a battle."
     
+# Update get_scores function
 def get_scores(ctx):
     server_id = str(ctx.guild.id)
     if server_id not in scores:
         return "No scores yet!"
-    return "\n".join([f"{user}: {score}" for user, score in scores[server_id].items()])
+    return "\n".join([f"{user}: Score - {data['score']}, Wins - {data['wins']}, Losses - {data['losses']}" for user, data in scores[server_id].items()])

@@ -4,8 +4,9 @@ import asyncio
 import functions
 import sounds
 from hangman import hangman
+from gtts import gTTS
 
-async def play(ctx):
+async def play(ctx, soundPath: str):
     # Ensure the bot is in a voice channel
     if ctx.author.voice is None:
         await ctx.send("You're not in a voice channel!")
@@ -19,7 +20,7 @@ async def play(ctx):
         await ctx.voice_client.move_to(voice_channel)
 
     # Play the audio file
-    audio_source = sounds.discordPlayMp3(sounds.removeSound)
+    audio_source = sounds.discordPlayMp3(soundPath)
     if not ctx.voice_client.is_playing():
         ctx.voice_client.play(audio_source, after=lambda e: print('done', e))
 
@@ -34,7 +35,7 @@ async def get_response(ctx, user_input: str) -> str:
     words = lowered_input.split()
 
     if words[0] == "king":
-        await play(ctx)
+        await play(ctx, sounds.removeSound)
         return asciiArt.xiJingPingArt
     
     if words[0] == "roll":
@@ -47,4 +48,10 @@ async def get_response(ctx, user_input: str) -> str:
         return await hangman.hangman(ctx)
     if words[0] == "score":
         return functions.get_scores(ctx)
-        
+    if words[0] == "tts":
+        lang = "en"
+        text = " ".join(words[1:])
+        tts = gTTS(text=text, lang=lang, slow=False)
+        tts.save("speech.mp3")
+        await play(ctx, "speech.mp3")
+        return "Playing text to speech"
